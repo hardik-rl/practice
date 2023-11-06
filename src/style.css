@@ -1,0 +1,167 @@
+
+
+/* The Modal (background) */
+.modal {
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  color: #000;
+}
+.modal-content h1 {
+  font-size: large;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+/* .hidden {
+  display: none;
+} */
+
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+th {
+  background-color: #04AA6D;
+  color: white;
+}
+
+.mt-4 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+button {
+  padding: 8px 24px;
+  margin-right: 10px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 18px;
+  border-width: 1px;
+  border-color: #000;
+  background-color: #04AA6D;
+}
+.d-flex {
+  display: flex;
+}
+.check-list ul{
+  list-style: none;
+  max-width: 300px;
+}
+.check-list li {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  font-size: 16px;
+  background-color: lightgray;
+  margin-bottom: 10px;
+}
+
+.check-list button {
+  margin-left: auto;
+  font-size: 12px;
+  padding: 6px 10px;
+}
+
+.pagination ul{
+  list-style: none;
+  display: flex;
+  align-items: center;
+  padding-left: 0;
+}
+.pagination ul li:not(.previous,.next) a {
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #f2f2f2;
+  color: #000;
+  margin-right: 10px;
+
+}
+
+.pagination ul li:not(.previous,.next):hover a{
+  color: #fff;
+  background-color: #04AA6D;
+}
+.pagination ul li.is-active a {
+  color: #fff;
+  background-color: #04AA6D;
+}
+
+li.disabled button {
+  cursor: not-allowed;
+  opacity: 0.3;
+  color: black;
+  background-color: #aaaaaa;
+}
+
+input,
+select {
+  outline: none;
+  margin-top: 6px;
+  padding: 6px 12px;
+}
+
+.loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 100px);
+}
+
+.loader p {
+  border: 10px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 10px solid #04AA6D;
+  width: 70px;
+  height: 70px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
