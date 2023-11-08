@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   createColumnHelper,
   flexRender,
@@ -14,12 +14,28 @@ import { useQuery } from "@tanstack/react-query";
 import Spinner from "../../components/Spinner";
 import { Link } from "react-router-dom";
 import ImgLoad from "./ImgLoad";
+import Modal from "../../components/Modal";
 
 const Table = () => {
   const { data: response, isLoading } = useQuery({
     queryKey: ["get-all-products"],
     queryFn: () => getProductList(),
   });
+
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [modalData, setModalData] = useState("");
+
+  const handleRowClick = (data) => {
+    setModalData(data);
+    setModalOpen(true);
+    document.body.classList.add("modal-open");
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setModalData("");
+    document.body.classList.remove("modal-open");
+  };
 
   const columnHelper = createColumnHelper();
   const columns = [
@@ -55,7 +71,7 @@ const Table = () => {
       header: () => <span>rating</span>,
       cell: (info) => {
         return (
-          <div style={{ display: "flex", whiteSpace:"nowrap" }}>
+          <div style={{ display: "flex", whiteSpace: "nowrap" }}>
             {info.row.original.rating.count}&nbsp; out of &nbsp;
             <span
               style={{
@@ -73,9 +89,7 @@ const Table = () => {
     columnHelper.accessor("image", {
       header: () => <span>Image</span>,
       cell: (info) => {
-        return (
-          <ImgLoad imgPath={info.row.original.image}/>
-        );
+        return <ImgLoad imgPath={info.row.original.image} />;
       },
       footer: (info) => info.column.id,
     }),
@@ -124,7 +138,7 @@ const Table = () => {
             </thead>
             <tbody>
               {table.getRowModel().rows.map((row) => (
-                <tr key={row.id}>
+                <tr onClick={() => handleRowClick(row.original)} key={row.id}>
                   {row.getVisibleCells().map((cell) => (
                     <td key={cell.id}>
                       {flexRender(
@@ -138,6 +152,45 @@ const Table = () => {
             </tbody>
           </table>
           <Pagination table={table} />
+          <Modal isOpen={isModalOpen} onClose={closeModal}>
+            <>
+              <h2>Products {modalData.id} Details</h2>
+              <ul>
+                <li>
+                  <strong>Title :- </strong>
+                  {modalData.title}
+                </li>
+                <li>
+                  <strong>Description :- </strong>
+                  {modalData.description}
+                </li>
+                <li>
+                  <strong>Price :- </strong>
+                  {modalData.price}
+                </li>
+                <li>
+                  <strong>Category :- </strong>
+                  {modalData.category}
+                </li>
+                <li>
+                  <strong>Rating :- </strong>
+                  {modalData.rating?.count} out of
+                  <span
+                    style={{
+                      color: modalData.rating?.rate > 3 ? "green" : "red",
+                      fontWeight: 600,
+                    }}
+                  >
+                    {modalData.rating?.rate}
+                  </span>
+                </li>
+                <li>
+                  <strong>Image :- </strong>
+                  <img width={50} height={50} src={modalData.image} alt="img" />
+                </li>
+              </ul>
+            </>
+          </Modal>
         </>
       )}
     </>

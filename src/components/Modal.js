@@ -1,18 +1,16 @@
 import React from "react";
 
-const Modal = ({ setIsVisible,children }) => {
+const Modal = ({ isOpen, onClose, children }) => {
+  if (!isOpen) {
+    return null;
+  }
   return (
     <div className="modal">
-      <h2 align="center">Example of Modal in Reactjs</h2>
       <div className="modal-content">
-        <div className="close">
-          <button onClick={() => setIsVisible(false)}>Close</button>
-        </div>
-       {children}
-        {/* <iframe
-          className="h-full w-full"
-          src={`${documentPreview.path}#toolbar=0`}
-        ></iframe> */}
+        <span className="close" onClick={onClose}>
+          &times;
+        </span>
+        {children}
       </div>
     </div>
   );
