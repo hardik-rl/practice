@@ -102,11 +102,12 @@ const Table = () => {
     getFilteredRowModel: getFilteredRowModel(),
   });
   return (
-    <div className="container">
+    <div className="px-3">
       {isLoading ? (
         <Spinner />
       ) : (
         <>
+          <br />
           <Link to={"/"}>&lt; Back</Link>
           <br />
           <br />

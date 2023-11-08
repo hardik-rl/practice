@@ -81,7 +81,8 @@ const Table = () => {
   });
 
   return (
-    <div className="container">
+    <div className="px-3">
+      <br />
       <Link to={"/"}>&lt; Back</Link> <br />
       <br />
       <table>
