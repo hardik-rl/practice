@@ -102,7 +102,7 @@ const Table = () => {
     getFilteredRowModel: getFilteredRowModel(),
   });
   return (
-    <>
+    <div className="container">
       {isLoading ? (
         <Spinner />
       ) : (
@@ -110,7 +110,6 @@ const Table = () => {
           <Link to={"/"}>&lt; Back</Link>
           <br />
           <br />
-
           <table>
             <thead>
               {table.getHeaderGroups().map((headerGroup) => (
@@ -193,7 +192,7 @@ const Table = () => {
           </Modal>
         </>
       )}
-    </>
+    </div>
   );
 };
 

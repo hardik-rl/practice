@@ -81,7 +81,7 @@ const Table = () => {
   });
 
   return (
-    <>
+    <div className="container">
       <Link to={"/"}>&lt; Back</Link> <br />
       <br />
       <table>
@@ -122,7 +122,7 @@ const Table = () => {
         </tbody>
       </table>
       <Pagination table={table} />
-    </>
+    </div>
   );
 };
 

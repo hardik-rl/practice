@@ -11,9 +11,7 @@ const queryClient = new QueryClient();
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <div style={{ padding: 40 }}>
-        <br />
-        {/* <Select /> */}
+      <div>
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/product" element={<Table />} />
