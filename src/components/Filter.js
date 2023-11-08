@@ -1,7 +1,7 @@
 import React from "react";
 import SelectFilter from "./SelectFilter";
 
-const Filter = ({ table, column }) => {
+const Filter = ({ column }) => {
   const { type } = column.columnDef.meta || {};
   const columnFilterValue = column.getFilterValue();
 
@@ -12,7 +12,6 @@ const Filter = ({ table, column }) => {
   if (type === "select") {
     return <SelectFilter column={column} />;
   }
-
   return (
     <div>
       <input

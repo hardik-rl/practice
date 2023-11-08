@@ -1,5 +1,3 @@
-
-
 /* The Modal (background) */
 .modal {
   position: fixed; /* Stay in place */
@@ -10,8 +8,8 @@
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 }
 
 /* Modal Content */
@@ -45,21 +43,23 @@
   display: none;
 } */
 
-
 table {
   border-collapse: collapse;
   width: 100%;
 }
 
-th, td {
+th,
+td {
   text-align: left;
   padding: 8px;
 }
 
-tr:nth-child(even){background-color: #f2f2f2}
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
 
 th {
-  background-color: #04AA6D;
+  background-color: #04aa6d;
   color: white;
 }
 
@@ -75,12 +75,12 @@ button {
   font-size: 18px;
   border-width: 1px;
   border-color: #000;
-  background-color: #04AA6D;
+  background-color: #04aa6d;
 }
 .d-flex {
   display: flex;
 }
-.check-list ul{
+.check-list ul {
   list-style: none;
   max-width: 300px;
 }
@@ -99,29 +99,28 @@ button {
   padding: 6px 10px;
 }
 
-.pagination ul{
+.pagination ul {
   list-style: none;
   display: flex;
   align-items: center;
   padding-left: 0;
 }
-.pagination ul li:not(.previous,.next) a {
+.pagination ul li:not(.previous, .next) a {
   padding: 10px;
   font-size: 16px;
   cursor: pointer;
   background-color: #f2f2f2;
   color: #000;
   margin-right: 10px;
-
 }
 
-.pagination ul li:not(.previous,.next):hover a{
+.pagination ul li:not(.previous, .next):hover a {
   color: #fff;
-  background-color: #04AA6D;
+  background-color: #04aa6d;
 }
 .pagination ul li.is-active a {
   color: #fff;
-  background-color: #04AA6D;
+  background-color: #04aa6d;
 }
 
 li.disabled button {
@@ -148,20 +147,40 @@ select {
 .loader p {
   border: 10px solid #f3f3f3;
   border-radius: 50%;
-  border-top: 10px solid #04AA6D;
+  border-top: 10px solid #04aa6d;
   width: 70px;
   height: 70px;
   -webkit-animation: spin 2s linear infinite; /* Safari */
   animation: spin 2s linear infinite;
 }
+.loader.spinner-sm {
+  height: 40px;
+  position: absolute;
+  left: 8px;
+  top: 8px;
+}
+.loader.spinner-sm p {
+  width: 24px;
+  height: 24px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #04aa6d;
+}
 
 /* Safari */
 @-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

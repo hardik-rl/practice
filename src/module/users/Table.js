@@ -10,6 +10,7 @@ import {
 } from "@tanstack/react-table";
 import Pagination from "../../components/Pagination";
 import Filter from "../../components/Filter";
+import { Link } from "react-router-dom";
 
 const Table = () => {
   const columnHelper = createColumnHelper();
@@ -71,10 +72,8 @@ const Table = () => {
       },
     }),
   ];
-  const [data, setData] = React.useState(() => [...defaultData]);
-  // const rerender = React.useReducer(() => ({}), {})[1];
   const table = useReactTable({
-    data,
+    data: defaultData,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -83,6 +82,8 @@ const Table = () => {
 
   return (
     <>
+      <Link to={"/"}>&lt; Back</Link> <br />
+      <br />
       <table>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -119,22 +120,6 @@ const Table = () => {
             </tr>
           ))}
         </tbody>
-        {/* <tfoot>
-          {table.getFooterGroups().map((footerGroup) => (
-            <tr key={footerGroup.id}>
-              {footerGroup.headers.map((header) => (
-                <th key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.footer,
-                        header.getContext()
-                      )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </tfoot> */}
       </table>
       <Pagination table={table} />
     </>

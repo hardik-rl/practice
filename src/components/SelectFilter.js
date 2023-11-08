@@ -11,14 +11,13 @@ const SelectFilter = ({ column }) => {
       column.setFilterValue("");
     }
   };
-
   return (
     <>
       <select onChange={handleSelectChange} value={columnFilterValue}>
         {filters.map((item, index) => (
           <option key={index} value={item.value}>
-            {item.label}
-          </option>
+          {item.label}
+        </option>
         ))}
       </select>
     </>

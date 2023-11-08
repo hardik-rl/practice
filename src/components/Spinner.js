@@ -1,7 +1,7 @@
 import React from "react";
 
-const Spinner = () => {
-  return <div className="loader">
+const Spinner = ({clasName}) => {
+  return <div className={`loader + ${clasName}`}>
     <p></p>
   </div>;
 };

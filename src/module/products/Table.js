@@ -12,6 +12,8 @@ import Filter from "../../components/Filter";
 import { getProductList } from "./api";
 import { useQuery } from "@tanstack/react-query";
 import Spinner from "../../components/Spinner";
+import { Link } from "react-router-dom";
+import ImgLoad from "./ImgLoad";
 
 const Table = () => {
   const { data: response, isLoading } = useQuery({
@@ -32,9 +34,20 @@ const Table = () => {
       footer: (info) => info.column.id,
       meta: { type: "text" },
     }),
+    columnHelper.accessor("description", {
+      cell: (info) => info.getValue(),
+      header: () => <span>Description</span>,
+      footer: (info) => info.column.id,
+      meta: { type: "text" },
+    }),
     columnHelper.accessor("price", {
-      cell: (info) => <i>{info.getValue()}</i>,
+      cell: (info) => info.getValue(),
       header: () => <span>Price</span>,
+      footer: (info) => info.column.id,
+    }),
+    columnHelper.accessor("category", {
+      cell: (info) => info.getValue(),
+      header: () => <span>Category</span>,
       footer: (info) => info.column.id,
       meta: { type: "text" },
     }),
@@ -42,7 +55,7 @@ const Table = () => {
       header: () => <span>rating</span>,
       cell: (info) => {
         return (
-          <div style={{ display: "flex" }}>
+          <div style={{ display: "flex", whiteSpace:"nowrap" }}>
             {info.row.original.rating.count}&nbsp; out of &nbsp;
             <span
               style={{
@@ -57,53 +70,16 @@ const Table = () => {
       },
       footer: (info) => info.column.id,
     }),
-    // columnHelper.accessor("gender", {
-    //   header: () => <span>Gender</span>,
-    //   footer: (info) => info.column.id,
-    //   cell: (info) => (
-    //     <div>{info.row.original.gender === "M" ? "Male" : "Female"}</div>
-    //   ),
-    //   meta: {
-    //     type: "select",
-    //     filters: [
-    //       { label: "All", value: "select" },
-    //       { label: "Male", value: "M" },
-    //       { label: "Female", value: "F" },
-    //     ],
-    //   },
-    // }),
     columnHelper.accessor("image", {
       header: () => <span>Image</span>,
       cell: (info) => {
         return (
-          <div>
-            <img
-              width={50}
-              height={50}
-              src={info.row.original.image}
-              alt="test"
-            />
-          </div>
+          <ImgLoad imgPath={info.row.original.image}/>
         );
       },
       footer: (info) => info.column.id,
     }),
-    // columnHelper.accessor("singup", {
-    //   header: () => <span>Singup</span>,
-    //   footer: (info) => info.column.id,
-    //   meta: {
-    //     type: "select",
-    //     filters: [
-    //       { label: "All", value: "select" },
-    //       { label: "Yes", value: "yes" },
-    //       { label: "No", value: "no" },
-    //     ],
-    //   },
-    // }),
   ];
-  // {console.log(response.data)}
-  // const [data, setData] = useState(() => [...response.data]);
-  // const rerender = React.useReducer(() => ({}), {})[1];
   const table = useReactTable({
     data: response?.data || [],
     columns,
@@ -117,6 +93,10 @@ const Table = () => {
         <Spinner />
       ) : (
         <>
+          <Link to={"/"}>&lt; Back</Link>
+          <br />
+          <br />
+
           <table>
             <thead>
               {table.getHeaderGroups().map((headerGroup) => (
@@ -133,7 +113,7 @@ const Table = () => {
 
                         {header.column.getCanFilter() ? (
                           <div>
-                            <Filter column={header.column} table={table} />
+                            <Filter column={header.column} />
                           </div>
                         ) : null}
                       </div>
@@ -156,22 +136,6 @@ const Table = () => {
                 </tr>
               ))}
             </tbody>
-            {/* <tfoot>
-          {table.getFooterGroups().map((footerGroup) => (
-            <tr key={footerGroup.id}>
-              {footerGroup.headers.map((header) => (
-                <th key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.footer,
-                        header.getContext()
-                      )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </tfoot> */}
           </table>
           <Pagination table={table} />
         </>
