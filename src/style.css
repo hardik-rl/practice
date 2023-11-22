@@ -36,7 +36,7 @@ body {
   padding-left: 0;
 }
 .modal li strong {
-  min-width: 115px;
+  min-width: 125px;
 }
 .modal li {
   margin-bottom: 20px;
@@ -82,7 +82,7 @@ th {
   margin-top: 20px;
   margin-bottom: 20px;
 }
-button {
+ul[role="navigation"] button {
   padding: 8px 24px;
   margin-right: 10px;
   color: #fff;
@@ -236,4 +236,12 @@ header a:hover {
   100% {
     transform: rotate(360deg);
   }
+}
+.actions {
+  display: flex;
+  gap: 10px;
+}
+.actions button {
+  white-space: nowrap;
+  display: flex;
 }

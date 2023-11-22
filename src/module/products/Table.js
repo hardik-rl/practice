@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Spinner from "../../components/Spinner";
+import { PencilAltIcon, PlusIcon, TrashIcon } from "@heroicons/react/solid";
 import {
   createColumnHelper,
   flexRender,
@@ -45,6 +46,7 @@ const Table = () => {
       cell: (info) => info.getValue(),
       header: () => <span>Title</span>,
       footer: (info) => info.column.title,
+      meta: { type: "text" },
     }),
     columnHelper.accessor("description", {
       header: () => <span>Description</span>,
@@ -88,6 +90,22 @@ const Table = () => {
         </div>
       ),
     }),
+    columnHelper.accessor("actions", {
+      header: () => <span>Actions</span>,
+      cell: () => (
+        <div className="actions">
+          <button>
+            <PlusIcon style={{ width: 18 }} />
+          </button>
+          <button>
+            <PencilAltIcon style={{ width: 18 }} />
+          </button>
+          <button>
+            <TrashIcon style={{ width: 18 }} />
+          </button>
+        </div>
+      ),
+    }),
     // columnHelper.accessor("singup", {
     //   header: () => <span>Singup</span>,
     //   footer: (info) => info.column.id,
@@ -114,6 +132,7 @@ const Table = () => {
       <br />
       <Link to={"/"}>&lt; Back</Link>
       <br />
+      {/* <TrashIcon style={{width: 20}} /> */}
       <br />
       {isLoading ? (
         <Spinner />
