@@ -10,6 +10,7 @@ import {
 } from "@tanstack/react-table";
 import Pagination from "../../components/Pagination";
 import Filter from "../../components/Filter";
+import { Link } from "react-router-dom";
 
 const Table = () => {
   const columnHelper = createColumnHelper();
@@ -82,7 +83,11 @@ const Table = () => {
   });
 
   return (
-    <>
+    <div className="px-3">
+      <br />
+      <Link to={"/"}>&lt; Back</Link>
+      <br />
+      <br />
       <table>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -137,7 +142,7 @@ const Table = () => {
         </tfoot> */}
       </table>
       <Pagination table={table} />
-    </>
+    </div>
   );
 };
 

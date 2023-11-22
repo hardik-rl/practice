@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Spinner from "../../components/Spinner";
 import {
   createColumnHelper,
@@ -11,16 +11,29 @@ import {
 import Pagination from "../../components/Pagination";
 import Filter from "../../components/Filter";
 import { getProductList } from "./api";
+import Modal from "../../components/Modal";
 import { useQuery } from "react-query";
+import { Link } from "react-router-dom";
 
 const Table = () => {
   const { data: response, isLoading } = useQuery({
     queryKey: ["get-all-products"],
     queryFn: () => getProductList(),
   });
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [modalData, setModalData] = useState("");
 
-  console.log(response?.data);
+  const handleRowClick = (data) => {
+    setModalData(data);
+    setModalOpen(true);
+    document.body.classList.add("modal-open");
+  };
 
+  const closeModal = () => {
+    setModalOpen(false);
+    setModalData("");
+    document.body.classList.remove("modal-open");
+  };
   const columnHelper = createColumnHelper();
   const columns = [
     columnHelper.accessor("id", {
@@ -43,6 +56,18 @@ const Table = () => {
       header: () => <span>Price</span>,
       footer: (info) => info.column.price,
     }),
+    columnHelper.accessor("image", {
+      cell: (info) => (
+        <img
+          src={info.row.original.image}
+          alt="img"
+          width={70}
+          height={70}
+          style={{ objectFit: "contain" }}
+        />
+      ),
+      header: () => <span>image</span>,
+    }),
     // columnHelper.accessor("gender", {
     //   header: () => <span>Gender</span>,
     //   footer: (info) => info.column.id,
@@ -63,22 +88,32 @@ const Table = () => {
       cell: (info) => (
         <div>
           {info.row.original.rating.rate} out of &nbsp;
-          {info.row.original.rating.count.toString().slice(0, -2)}
+          <span
+            style={{
+              fontWeight: "600",
+              color:
+                info.row.original.rating.count.toString().slice(0, -2) >= 3
+                  ? "green"
+                  : "red",
+            }}
+          >
+            {info.row.original.rating.count.toString().slice(0, -2)}
+          </span>
         </div>
       ),
     }),
-    columnHelper.accessor("singup", {
-      header: () => <span>Singup</span>,
-      footer: (info) => info.column.id,
-      meta: {
-        type: "select",
-        filters: [
-          { label: "All", value: "select" },
-          { label: "Yes", value: "yes" },
-          { label: "No", value: "no" },
-        ],
-      },
-    }),
+    // columnHelper.accessor("singup", {
+    //   header: () => <span>Singup</span>,
+    //   footer: (info) => info.column.id,
+    //   meta: {
+    //     type: "select",
+    //     filters: [
+    //       { label: "All", value: "select" },
+    //       { label: "Yes", value: "yes" },
+    //       { label: "No", value: "no" },
+    //     ],
+    //   },
+    // }),
   ];
   const table = useReactTable({
     data: response?.data || [],
@@ -89,7 +124,11 @@ const Table = () => {
   });
 
   return (
-    <>
+    <div className="px-3">
+      <br />
+      <Link to={"/"}>&lt; Back</Link>
+      <br />
+      <br />
       {isLoading ? (
         <Spinner />
       ) : (
@@ -121,7 +160,7 @@ const Table = () => {
             </thead>
             <tbody>
               {table.getRowModel().rows.map((row) => (
-                <tr key={row.id}>
+                <tr key={row.id} onClick={() => handleRowClick(row.original)}>
                   {row.getVisibleCells().map((cell) => (
                     <td key={cell.id}>
                       {flexRender(
@@ -133,27 +172,50 @@ const Table = () => {
                 </tr>
               ))}
             </tbody>
-            {/* <tfoot>
-          {table.getFooterGroups().map((footerGroup) => (
-            <tr key={footerGroup.id}>
-              {footerGroup.headers.map((header) => (
-                <th key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.footer,
-                        header.getContext()
-                      )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </tfoot> */}
           </table>
           <Pagination table={table} />
+          <Modal isOpen={isModalOpen} onClose={closeModal}>
+            <>
+              <h2>Products {modalData.id} Details</h2>
+              <ul>
+                <li>
+                  <strong>Title :- </strong>
+                  {modalData.title}
+                </li>
+                <li>
+                  <strong>Description :- </strong>
+                  {modalData.description}
+                </li>
+                <li>
+                  <strong>Price :- </strong>
+                  {modalData.price}
+                </li>
+                <li>
+                  <strong>Category :- </strong>
+                  {modalData.category}
+                </li>
+                <li>
+                  <strong>Rating :- </strong>
+                  {modalData.rating?.count} out of
+                  <span
+                    style={{
+                      color: modalData.rating?.rate > 3 ? "green" : "red",
+                      fontWeight: 600,
+                    }}
+                  >
+                    {modalData.rating?.rate}
+                  </span>
+                </li>
+                <li>
+                  <strong>Image :- </strong>
+                  <img width={50} height={50} src={modalData.image} alt="img" />
+                </li>
+              </ul>
+            </>
+          </Modal>
         </>
       )}
-    </>
+    </div>
   );
 };
 
