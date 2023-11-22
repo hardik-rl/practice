@@ -1,5 +1,4 @@
 import React from "react";
-import defaultData from "../../data.json";
 import {
   createColumnHelper,
   flexRender,
@@ -11,8 +10,15 @@ import {
 import Pagination from "../../components/Pagination";
 import Filter from "../../components/Filter";
 import { Link } from "react-router-dom";
+import { getUsersList } from "./api";
+import { useQuery } from "react-query";
+import Spinner from "../../components/Spinner";
 
 const Table = () => {
+  const { data: response, isLoading } = useQuery({
+    queryKey: ["get-all-products"],
+    queryFn: () => getUsersList(),
+  });
   const columnHelper = createColumnHelper();
 
   const columns = [
@@ -22,60 +28,38 @@ const Table = () => {
       footer: (info) => info.column.id,
     }),
     columnHelper.accessor("firstName", {
-      cell: (info) => info.getValue(),
       header: () => <span>First Name</span>,
-      footer: (info) => info.column.id,
-      meta: { type: "text" },
+      cell: (info) => <div>{info.row.original.name?.firstname}</div>,
+      footer: (info) => info.column.name.firstname,
     }),
     columnHelper.accessor((row) => row.lastName, {
       id: "lastName",
-      cell: (info) => <i>{info.getValue()}</i>,
+      cell: (info) => <div>{info.row.original.name?.lastname}</div>,
       header: () => <span>Last Name</span>,
-      footer: (info) => info.column.id,
-      meta: { type: "text" },
-    }),
-    columnHelper.accessor("age", {
-      header: () => <span>Age</span>,
-      cell: (info) => info.renderValue(),
-      footer: (info) => info.column.id,
-    }),
-    columnHelper.accessor("gender", {
-      header: () => <span>Gender</span>,
-      footer: (info) => info.column.id,
-      cell: (info) => (
-        <div>{info.row.original.gender === "M" ? "Male" : "Female"}</div>
-      ),
-      meta: {
-        type: "select",
-        filters: [
-          { label: "All", value: "select" },
-          { label: "Male", value: "M" },
-          { label: "Female", value: "F" },
-        ],
-      },
+      footer: (info) => info.column.name.lastName,
     }),
     columnHelper.accessor("email", {
       header: () => <span>Email</span>,
       footer: (info) => info.column.id,
       meta: { type: "text" },
     }),
-    columnHelper.accessor("singup", {
-      header: () => <span>Singup</span>,
-      footer: (info) => info.column.id,
-      meta: {
-        type: "select",
-        filters: [
-          { label: "All", value: "select" },
-          { label: "Yes", value: "yes" },
-          { label: "No", value: "no" },
-        ],
-      },
+    columnHelper.accessor("phone", {
+      header: () => <span>Phone</span>,
+      footer: (info) => info.column.phone,
+    }),
+    columnHelper.accessor("city", {
+      cell: (info) => <div>{info.row.original.address?.city}</div>,
+      header: () => <span>City</span>,
+      footer: (info) => info.column.address.city,
+    }),
+    columnHelper.accessor("Address", {
+      cell: (info) => <div>{info.row.original.address?.street}</div>,
+      header: () => <span>address</span>,
+      footer: (info) => info.column.address?.street,
     }),
   ];
-  const [data, setData] = React.useState(() => [...defaultData]);
-  // const rerender = React.useReducer(() => ({}), {})[1];
   const table = useReactTable({
-    data,
+    data: response?.data || [],
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -85,63 +69,55 @@ const Table = () => {
   return (
     <div className="px-3">
       <br />
-      <Link to={"/"}>&lt; Back</Link>
+      <Link to={"/"}>&lt; Back</Link> <br />
       <br />
-      <br />
-      <table>
-        <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th key={header.id}>
-                  <div>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-
-                    {header.column.getCanFilter() ? (
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <>
+          <table>
+            <thead>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <th key={header.id}>
                       <div>
-                        <Filter column={header.column} table={table} />
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+
+                        {header.column.getCanFilter() ? (
+                          <div>
+                            <Filter column={header.column} table={table} />
+                          </div>
+                        ) : null}
                       </div>
-                    ) : null}
-                  </div>
-                </th>
+                    </th>
+                  ))}
+                </tr>
               ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-        {/* <tfoot>
-          {table.getFooterGroups().map((footerGroup) => (
-            <tr key={footerGroup.id}>
-              {footerGroup.headers.map((header) => (
-                <th key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.footer,
-                        header.getContext()
+            </thead>
+            <tbody>
+              {table.getRowModel().rows.map((row) => (
+                <tr key={row.id}>
+                  {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
                       )}
-                </th>
+                    </td>
+                  ))}
+                </tr>
               ))}
-            </tr>
-          ))}
-        </tfoot> */}
-      </table>
-      <Pagination table={table} />
+            </tbody>
+          </table>
+          <Pagination table={table} />
+        </>
+      )}
     </div>
   );
 };

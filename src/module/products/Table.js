@@ -68,36 +68,22 @@ const Table = () => {
       ),
       header: () => <span>image</span>,
     }),
-    // columnHelper.accessor("gender", {
-    //   header: () => <span>Gender</span>,
-    //   footer: (info) => info.column.id,
-    //   cell: (info) => (
-    //     <div>{info.row.original.gender === "M" ? "Male" : "Female"}</div>
-    //   ),
-    //   meta: {
-    //     type: "select",
-    //     filters: [
-    //       { label: "All", value: "select" },
-    //       { label: "Male", value: "M" },
-    //       { label: "Female", value: "F" },
-    //     ],
-    //   },
-    // }),
+
     columnHelper.accessor("rating", {
       header: () => <span>Rating</span>,
       cell: (info) => (
         <div>
-          {info.row.original.rating.rate} out of &nbsp;
+          {info.row.original.rating?.rate} out of &nbsp;
           <span
             style={{
               fontWeight: "600",
               color:
-                info.row.original.rating.count.toString().slice(0, -2) >= 3
+                info.row.original.rating?.count.toString().slice(0, -2) >= 3
                   ? "green"
                   : "red",
             }}
           >
-            {info.row.original.rating.count.toString().slice(0, -2)}
+            {info.row.original.rating?.count.toString().slice(0, -2)}
           </span>
         </div>
       ),
