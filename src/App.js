@@ -1,15 +1,17 @@
 import "../src/style.css";
 import React from "react";
-import Select from "./components/Select";
-import Table from "./module/users/Table";
+import Table from "./module/products/Table";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient();
 
 const App = () => {
   return (
-    <div style={{ padding: 40 }}>
-      <br />
-      <Select />
-      <Table />
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <div style={{ padding: 40 }}>
+        <Table />
+      </div>
+    </QueryClientProvider>
   );
 };
 
