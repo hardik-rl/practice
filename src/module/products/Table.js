@@ -12,29 +12,30 @@ import {
 import Pagination from "../../components/Pagination";
 import Filter from "../../components/Filter";
 import { getProductList } from "./api";
-import Modal from "../../components/Modal";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
+import ProductViewModal from "./ProductViewModal";
+import ProductAddModal from "./ProductAddModal";
 
 const Table = () => {
   const { data: response, isLoading } = useQuery({
     queryKey: ["get-all-products"],
     queryFn: () => getProductList(),
   });
-  const [isModalOpen, setModalOpen] = useState(false);
-  const [modalData, setModalData] = useState("");
 
+  const [viewProduct, setViewProduct] = useState(false);
+  const [productData, setProductData] = useState("");
   const handleRowClick = (data) => {
-    setModalData(data);
-    setModalOpen(true);
-    document.body.classList.add("modal-open");
+    setProductData(data);
+    setViewProduct(true);
   };
 
-  const closeModal = () => {
-    setModalOpen(false);
-    setModalData("");
-    document.body.classList.remove("modal-open");
+  const [addProduct, setAddProduct] = useState(false);
+  const addProductOnClick = (e) => {
+    e.stopPropagation();
+    setAddProduct(true);
   };
+
   const columnHelper = createColumnHelper();
   const columns = [
     columnHelper.accessor("id", {
@@ -94,7 +95,7 @@ const Table = () => {
       header: () => <span>Actions</span>,
       cell: () => (
         <div className="actions">
-          <button>
+          <button onClick={addProductOnClick}>
             <PlusIcon style={{ width: 18 }} />
           </button>
           <button>
@@ -106,18 +107,6 @@ const Table = () => {
         </div>
       ),
     }),
-    // columnHelper.accessor("singup", {
-    //   header: () => <span>Singup</span>,
-    //   footer: (info) => info.column.id,
-    //   meta: {
-    //     type: "select",
-    //     filters: [
-    //       { label: "All", value: "select" },
-    //       { label: "Yes", value: "yes" },
-    //       { label: "No", value: "no" },
-    //     ],
-    //   },
-    // }),
   ];
   const table = useReactTable({
     data: response?.data || [],
@@ -132,7 +121,6 @@ const Table = () => {
       <br />
       <Link to={"/"}>&lt; Back</Link>
       <br />
-      {/* <TrashIcon style={{width: 20}} /> */}
       <br />
       {isLoading ? (
         <Spinner />
@@ -179,45 +167,17 @@ const Table = () => {
             </tbody>
           </table>
           <Pagination table={table} />
-          <Modal isOpen={isModalOpen} onClose={closeModal}>
-            <>
-              <h2>Products {modalData.id} Details</h2>
-              <ul>
-                <li>
-                  <strong>Title :- </strong>
-                  {modalData.title}
-                </li>
-                <li>
-                  <strong>Description :- </strong>
-                  {modalData.description}
-                </li>
-                <li>
-                  <strong>Price :- </strong>
-                  {modalData.price}
-                </li>
-                <li>
-                  <strong>Category :- </strong>
-                  {modalData.category}
-                </li>
-                <li>
-                  <strong>Rating :- </strong>
-                  {modalData.rating?.count} out of
-                  <span
-                    style={{
-                      color: modalData.rating?.rate > 3 ? "green" : "red",
-                      fontWeight: 600,
-                    }}
-                  >
-                    {modalData.rating?.rate}
-                  </span>
-                </li>
-                <li>
-                  <strong>Image :- </strong>
-                  <img width={50} height={50} src={modalData.image} alt="img" />
-                </li>
-              </ul>
-            </>
-          </Modal>
+          <ProductViewModal
+            viewProduct={viewProduct}
+            setViewProduct={setViewProduct}
+            productData={productData}
+            setProductData={setProductData}
+          />
+
+          <ProductAddModal
+            viewProduct={addProduct}
+            onClose={() => setAddProduct(false)}
+          />
         </>
       )}
     </div>
