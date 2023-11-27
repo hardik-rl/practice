@@ -15,8 +15,7 @@ const ProductAddModal = ({ viewProduct, onClose }) => {
       category: "",
     },
     onSubmit: (data) => {
-      addProductApi(data);
-      onClose();
+      addProductApi(data).then(() => onClose());
     },
   });
   return (

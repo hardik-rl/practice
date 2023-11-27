@@ -18,7 +18,11 @@ import ProductViewModal from "./ProductViewModal";
 import ProductAddModal from "./ProductAddModal";
 
 const Table = () => {
-  const { data: response, isLoading } = useQuery({
+  const {
+    data: response,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["get-all-products"],
     queryFn: () => getProductList(),
   });
@@ -176,7 +180,10 @@ const Table = () => {
 
           <ProductAddModal
             viewProduct={addProduct}
-            onClose={() => setAddProduct(false)}
+            onClose={() => {
+              refetch();
+              setAddProduct(false);
+            }}
           />
         </>
       )}
