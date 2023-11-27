@@ -1,4 +1,4 @@
-import "../src/style.css";
+import "../src/css/global.css";
 import React from "react";
 import Home from "./module/Home";
 import Table from "./module/products/Table";
