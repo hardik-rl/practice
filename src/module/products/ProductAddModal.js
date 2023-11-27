@@ -1,32 +1,72 @@
 import React from "react";
+import { useFormik } from "formik";
 import Modal from "../../components/Modal";
+import { addProductApi } from "./api";
 import FormLabel from "../../shared/FormLabel";
 import FormInput from "../../shared/FormInput";
 
 const ProductAddModal = ({ viewProduct, onClose }) => {
+  const formik = useFormik({
+    initialValues: {
+      title: "",
+      price: "",
+      description: "",
+      image: "",
+      category: "",
+    },
+    onSubmit: (data) => {
+      addProductApi(data);
+      onClose();
+    },
+  });
   return (
     <Modal isOpen={viewProduct} onClose={onClose}>
-      <h2>Add Product</h2>
-      <form>
-        <div className="form-group">
-          <FormLabel />
-          <FormInput />
+      <form onSubmit={formik.handleSubmit}>
+        <div className="grid grid-cols-2 gap-6">
+          <div>
+            <FormLabel name="Title" />
+            <FormInput
+              name="title"
+              value={formik.values.title}
+              onChange={formik.handleChange}
+            />
+          </div>
+          <div>
+            <FormLabel name="Price" />
+            <FormInput
+              name="price"
+              value={formik.values.price}
+              onChange={formik.handleChange}
+            />
+          </div>
+          <div>
+            <FormLabel name="Description" />
+            <FormInput
+              name="description"
+              value={formik.values.description}
+              onChange={formik.handleChange}
+            />
+          </div>
+          <div>
+            <FormLabel name="Image" />
+            <FormInput
+              name="image"
+              value={formik.values.image}
+              onChange={formik.handleChange}
+            />
+          </div>
+          <div>
+            <FormLabel name="Category" />
+            <FormInput
+              name="category"
+              value={formik.values.category}
+              onChange={formik.handleChange}
+            />
+          </div>
         </div>
-
-        <div className="mt-6 flex items-center justify-end gap-x-6">
-          <button
-            type="button"
-            className="text-sm font-semibold leading-6 text-gray-900"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          >
-            Save
-          </button>
-        </div>
+        <button type="submit" className="btn-primary mt-6">
+          Submit
+        </button>
       </form>
     </Modal>
   );
