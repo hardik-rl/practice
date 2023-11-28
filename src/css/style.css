@@ -151,6 +151,10 @@ select {
   outline: none;
   margin-top: 6px;
   padding: 6px 12px;
+
+}
+input {
+  color: rgb(20, 19, 19) !important;
 }
 header {
   background-color: #04aa6d;

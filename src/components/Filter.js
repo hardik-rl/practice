@@ -18,6 +18,7 @@ const Filter = ({ table, column }) => {
       <input
         value={columnFilterValue ?? ""}
         placeholder="Search"
+        className="form-control max-w-[153px]"
         onChange={(e) => column.setFilterValue(e.target.value)}
       />
     </div>
